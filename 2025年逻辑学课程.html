@@ -1,7 +1,66 @@
-<br>
-<br>
-<p> <a href="index.html">返回Back</a> </p>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>课程资源页面</title>
+    <style>
+        /* 容器样式，确保内容有边界 */
+        .container {
+            max-width: 800px; /* 限制宽度，保持整洁 */
+            margin: 0 auto; /* 居中显示 */
+            padding: 20px; /* 内边距 */
+        }
 
-<hr/>
-<li><a href="files/example.pdf" download="logic for SJPOPC.pdf">讲义（每周更新）</a></li>
-<li><a href="files/example.pdf" download="week1.pdf">Week 1课程ppt</a></li>
+        /* 图片样式 */
+        .image-with-caption {
+            float: right; /* 浮动到右侧 */
+            width: 30%; /* 图片宽度，可调整 */
+            margin: 0 0 20px 20px; /* 外边距：底部和左侧留空间 */
+            text-align: center; /* 图片和说明居中 */
+        }
+        .image-with-caption img {
+            width: 100%; /* 填满容器 */
+            height: auto;
+        }
+        .image-with-caption .caption {
+            font-family: "KaiTi", "STKaiti", serif; /* 楷体 */
+            color: gray; /* 灰色说明文字 */
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        /* 列表样式优化 */
+        ul {
+            list-style-type: disc; /* 小黑点 */
+            padding-left: 20px; /* 左边距 */
+        }
+        li {
+            margin-bottom: 15px; /* 列表项间距 */
+        }
+        a {
+            text-decoration: none; /* 移除默认下划线 */
+            color: #0066cc; /* 链接颜色，可调整 */
+        }
+        a:hover {
+            text-decoration: underline; /* 鼠标悬停显示下划线 */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <p><a href="index.html">返回Back</a></p>
+        <hr/>
+
+        <!-- 图片容器 -->
+        <div class="image-with-caption">
+            <img src="好色好学.jpg" alt="学习">
+            <div class="caption">子曰：吾未见好德如好色者也</div>
+        </div>
+
+        <ul>
+            <li><a href="files/example.pdf" download="logic for SJPOPC.pdf">讲义（每周更新）</a></li>
+            <li><a href="files/example.pdf" download="week1.pdf">Week 1课程PPT</a></li>
+        </ul>
+    </div>
+</body>
+</html>
