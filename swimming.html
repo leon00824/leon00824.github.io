@@ -1,17 +1,67 @@
-<br>
-<br>
-<p> <a href="index.html">返回Back</a> </p>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>游泳页面</title>
+    <style>
+        /* 容器样式，确保内容有边界 */
+        .container {
+            max-width: 800px; /* 限制宽度，保持整洁 */
+            margin: 0 auto; /* 居中显示 */
+            padding: 20px; /* 内边距 */
+        }
 
-<hr/>
+        /* 图片样式 */
+        .image-with-caption {
+            float: right; /* 浮动到右侧 */
+            width: 30%; /* 图片宽度，可调整 */
+            margin: 0 0 20px 20px; /* 外边距：底部和左侧留空间 */
+            text-align: center; /* 图片和说明居中 */
+        }
+        .image-with-caption img {
+            width: 100%; /* 填满容器 */
+            height: auto;
+        }
+        .image-with-caption .caption {
+            font-family: "KaiTi", "STKaiti", serif; /* 楷体 */
+            color: gray; /* 灰色说明文字 */
+            font-size: 12px;
+            margin-top: 5px;
+        }
 
-<br>
-<ul>
-<li>
-  <p>我每天在学校水上运动中心练习游泳，欢迎加入！</p>
-</li>
-<br>
-<li>
-  <p>我用爱发电，翻译了一本泳坛紫微星莱德基的自传（没有购买版权，也没有出版，仅供爱好者们阅读），希望读者能从中获得力量。<a href="莱德基自传.pdf" download="莱德基自传.pdf">点击下载阅读</a></p>
-</li>
-</ul>
+        /* 列表样式优化 */
+        ul {
+            list-style-type: disc; /* 小黑点 */
+            padding-left: 20px; /* 左边距 */
+        }
+        li {
+            margin-bottom: 15px; /* 列表项间距 */
+        }
+        li p {
+            margin: 0; /* 移除段落默认外边距 */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <p><a href="index.html">返回Back</a></p>
+        <hr/>
+        <br>
 
+        <!-- 图片容器 -->
+        <div class="image-with-caption">
+            <img src="用爱发电.jpg" alt="用爱发电">
+            <div class="caption">用爱发电</div>
+        </div>
+
+        <ul>
+            <li>
+                <p>我每天在学校水上运动中心练习游泳，欢迎加入！</p>
+            </li>
+            <li>
+                <p>我用爱发电，翻译了一本泳坛紫微星莱德基的自传（没有购买版权，也没有出版，仅供爱好者们阅读），希望读者能从中获得力量。<a href="莱德基自传.pdf" download="莱德基自传.pdf">点击下载阅读</a></p>
+            </li>
+        </ul>
+    </div>
+</body>
+</html>
