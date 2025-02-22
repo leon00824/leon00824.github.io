@@ -25,6 +25,22 @@
         .kaiti {
             font-family: "KaiTi", "STKaiti", serif;
         }
+
+        /* 新增：留言互动按钮样式 */
+        .comment-button {
+            display: inline-block; /* 使按钮像内联元素，但可以设置宽度和高度 */
+            padding: 10px 20px; /* 内边距 */
+            background-color: #0066cc; /* 蓝色，与链接颜色一致 */
+            color: white; /* 文字白色 */
+            text-decoration: none; /* 移除下划线 */
+            border-radius: 4px; /* 圆角 */
+            margin-top: 20px; /* 与上方内容间距 */
+            cursor: pointer; /* 鼠标悬停时显示手型 */
+            font-size: 14px; /* 文字大小 */
+        }
+        .comment-button:hover {
+            background-color: #0052a3; /* 鼠标悬停时变深 */
+        }
     </style>
 </head>
 <body>
@@ -65,6 +81,9 @@
             <p><span class="kaiti">地点：四川省德阳市旌阳区四川司法警官职业学院青衣江校区求索楼</span>216</p>
             <p><span class="kaiti">答疑时间: 每周一周二</span>9:00-16:00<span class="kaiti">，请提前邮件预约</span></p>
         </font>
+
+        <!-- 新增：留言互动按钮 -->
+        <a href="comments.html" class="comment-button">留言互动</a>
     </div>
 </body>
 </html>
