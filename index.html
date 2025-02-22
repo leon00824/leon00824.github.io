@@ -1,6 +1,42 @@
 <br>
 <br>
 
+   <style>
+        /* 容器使用 Flexbox 实现左右布局 */
+        .container {
+            display: flex;
+            align-items: center; /* 垂直居中对齐文字和图片 */
+            gap: 20px; /* 文字和图片之间的间距 */
+            max-width: 800px; /* 限制容器宽度，可根据需要调整 */
+            margin: 20px auto; /* 居中显示 */
+        }
+
+        /* 左侧文字样式 */
+        .text {
+            flex: 1; /* 让文字占剩余空间 */
+        }
+
+        /* 右侧图片和说明容器 */
+        .image-container {
+            text-align: center; /* 图片和说明文字居中 */
+        }
+
+        /* 图片样式 */
+        .image-container img {
+            max-width: 200px; /* 控制图片大小，可调整 */
+            height: auto;
+        }
+
+        /* 图片说明文字样式 */
+        .caption {
+            font-family: "KaiTi", "STKaiti", serif; /* 楷体 */
+            color: gray; /* 灰色 */
+            font-size: 14px; /* 文字大小，可调整 */
+            margin-top: 5px; /* 与图片的间距 */
+        }
+    </style>
+
+
 
 <head>
     <title>Space for Liang Kou</title>
@@ -16,8 +52,12 @@
         Welcome to the world of logic and metaphysics
       </h1>
 
-         <img src="summer.jpg" style="float:right; margin: 50px; width: 25%;
-height: auto;" alt="清晨的校园一角" />
+<div class="container">
+        <div class="image-container">
+            <img src=""summer.jpg"" alt="清晨的校园一角">
+            <div class="caption">清晨的校园一角</div>
+        </div>
+    </div>
         
       <hr/>
       <br>
