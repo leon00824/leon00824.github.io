@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>留言互动 - Space for Liang Kou</title>
+    <style>
+        body {
+            font-family: "KaiTi", "STKaiti", serif;
+            margin: 50px;
+        }
+        h1 {
+            color: #333;
+        }
+        hr {
+            border: 1px solid #ccc;
+        }
+        .form-container {
+            margin: 20px 0;
+        }
+        .form-container input, .form-container textarea {
+            width: 100%;
+            max-width: 400px;
+            padding: 8px;
+            margin: 5px 0;
+            font-family: "KaiTi", "STKaiti", serif;
+        }
+        .form-container button {
+            padding: 10px 20px;
+            background-color: #666; /* 灰色，与页面协调 */
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .form-container button:hover {
+            background-color: #555; /* 悬停时稍深 */
+        }
+        .comment-list {
+            margin-top: 20px;
+        }
+        .comment {
+            border-bottom: 1px solid #eee;
+            padding: 10px 0;
+        }
+        .comment .name {
+            font-weight: bold;
+            color: #333;
+        }
+        .comment .class {
+            color: gray;
+            font-size: 12px;
+        }
+        .comment .content {
+            margin: 5px 0;
+        }
+        .comment .reply {
+            margin-left: 20px;
+            color: #666;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <h1>留言互动</h1>
+    <hr/>
+    <div class="form-container">
+        <input type="text" id="name" placeholder="请输入您的姓名" required>
+        <input type="text" id="class" placeholder="请输入您的班级" required>
+        <textarea id="content" placeholder="请输入留言内容" rows="4" required></textarea>
+        <button onclick="submitComment()">提交留言</button>
+    </div>
+    <div class="comment-list" id="commentList">
+        <!-- 留言将动态插入这里 -->
+    </div>
+
+    <script>
+        const token = 'YOUR_PERSONAL_ACCESS_TOKEN'; // 替换为你的 Personal Access Token
+        const repo = 'your-username/your-repo'; // 替换为你的 GitHub 用户名和仓库名
+
+        // 提交留言到 GitHub Issues
+        async function submitComment() {
+            const name = document.getElementById('name').value;
+            const className = document.getElementById('class').value;
+            const content = document.getElementById('content').value;
+
+            if (!name || !className || !content) {
+                alert('请填写所有字段！');
+                return;
+            }
+
+            const response = await fetch(`https://api.github.com/repos/${repo}/issues`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `token ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    title: `${name} (${className}) 的留言`,
+                    body: content
+                })
+            });
+
+            if (response.ok) {
+                alert('留言提交成功，待审核！');
+                document.getElementById('name').value = '';
+                document.getElementById('class').value = '';
+                document.getElementById('content').value = '';
+                fetchComments(); // 提交后刷新留言
+            } else {
+                alert('提交失败，请稍后重试！');
+            }
+        }
+
+        // 获取并显示公开的 Issues（留言）及其回复
+        async function fetchComments() {
+            const response = await fetch(`https://api.github.com/repos/${repo}/issues?state=open`);
+            const issues = await response.json();
+            const commentList = document.getElementById('commentList');
+            commentList.innerHTML = '';
+
+            for (const issue of issues) {
+                const [name, className] = issue.title.match(/^(.*) \((.*)\)$/).slice(1); // 解析标题
+                const div = document.createElement('div');
+                div.className = 'comment';
+                div.innerHTML = `
+                    <div class="name">${name}</div>
+                    <div class="class">${className}</div>
+                    <div class="content">${issue.body}</div>
+                `;
+
+                // 获取该 Issue 的评论（回复）
+                const commentsResponse = await fetch(issue.comments_url);
+                const comments = await commentsResponse.json();
+                comments.forEach(comment => {
+                    const replyDiv = document.createElement('div');
+                    replyDiv.className = 'reply';
+                    replyDiv.innerHTML = `<strong>${comment.user.login}:</strong> ${comment.body}`;
+                    div.appendChild(replyDiv);
+                });
+
+                commentList.appendChild(div);
+            }
+        }
+
+        // 页面加载时显示已有留言
+        window.onload = fetchComments;
+    </script>
+</body>
+</html>
