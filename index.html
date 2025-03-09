@@ -1,18 +1,15 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-E4RRRPXJRW"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-E4RRRPXJRW');
+    </script>
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-E4RRRPXJRW"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-E4RRRPXJRW');
-</script>
-
-    
     <meta charset="UTF-8">
     <title>Space for Liang Kou</title>
     <style>
@@ -37,21 +34,26 @@
         .kaiti {
             font-family: "KaiTi", "STKaiti", serif;
         }
-
-        /* 新增：留言互动按钮样式 */
-        .comment-button {
-            display: inline-block; /* 使按钮像内联元素，但可以设置宽度和高度 */
-            padding: 10px 20px; /* 内边距 */
-            background-color: #0066cc; /* 蓝色，与链接颜色一致 */
-            color: white; /* 文字白色 */
-            text-decoration: none; /* 移除下划线 */
-            border-radius: 4px; /* 圆角 */
-            margin-top: 20px; /* 与上方内容间距 */
-            cursor: pointer; /* 鼠标悬停时显示手型 */
-            font-size: 14px; /* 文字大小 */
+        /* 留言链接样式 */
+        .comment-link {
+            color: #333;
+            text-decoration: none;
+            font-family: "KaiTi", "STKaiti", serif;
+            position: relative;
+            margin-left: 10px;
         }
-        .comment-button:hover {
-            background-color: #0052a3; /* 鼠标悬停时变深 */
+        .comment-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            bottom: -2px;
+            left: 0;
+            background-color: #666;
+            transition: width 0.3s ease-in-out;
+        }
+        .comment-link:hover::after {
+            width: 100%;
         }
     </style>
 </head>
@@ -86,14 +88,14 @@
         
         <br>
         <p>在这里，你能找到<a href="teach.html">课程材料(Teaching Material)</a>和<a href="publication">一些我发表的作品(Publications)</a>。</p>    
-        
+        <a href="comments.html" class="comment-link">留言互动</a>
+
         <hr/>
         <font size="1"> 
             <p>Email：<i>koul1994@outlook.com</i></p>
             <p><span class="kaiti">地点：四川省德阳市旌阳区四川司法警官职业学院青衣江校区求索楼</span>216</p>
             <p><span class="kaiti">答疑时间: 每周一周二</span>9:00-16:00<span class="kaiti">，请提前邮件预约</span></p>
         </font>
-
     </div>
 </body>
 </html>
