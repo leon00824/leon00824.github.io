@@ -2,12 +2,9 @@ name: Comment API
 
 on:
   workflow_dispatch: # 手动触发
-  push: # 每次推送代码时触发
-    branches:
-      - main
 
 jobs:
-  api:
+  handle-comments:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -21,65 +18,72 @@ jobs:
       - name: Install dependencies
         run: npm install node-fetch
 
-      - name: Run API Server
+      - name: Process Pending Comment
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           node -e '
             const fetch = require("node-fetch");
-            const express = require("express");
-            const app = express();
 
-            app.use(express.json());
+            async function submitComment() {
+              // 模拟从前端获取数据（这里需要手动触发，实际中可扩展为读取文件）
+              const pendingComment = { name: "Test User", className: "Test Class", content: "Test Content" }; // 替换为实际数据
+              if (!pendingComment) return;
 
-            // 提交留言
-            app.post("/submit-comment", async (req, res) => {
-              const { name, className, content } = req.body;
+              const { name, className, content } = pendingComment;
               if (!name || !className || !content) {
-                return res.status(400).json({ error: "请填写所有字段！" });
+                console.log("字段未填全，跳过提交");
+                return;
               }
-              try {
-                const response = await fetch("https://api.github.com/repos/leon00824/leon00824.github.io/issues", {
-                  method: "POST",
-                  headers: {
-                    "Authorization": `token ${process.env.GITHUB_TOKEN}`,
-                    "Content-Type": "application/json",
-                    "Accept": "application/vnd.github.v3+json",
-                  },
-                  body: JSON.stringify({
-                    title: `${name} (${className}) 的留言`,
-                    body: content,
-                  }),
-                });
-                if (response.ok) {
-                  res.json({ success: true, message: "留言提交成功，待审核！" });
-                } else {
-                  res.status(response.status).json({ success: false, error: `提交失败，状态码：${response.status}` });
-                }
-              } catch (error) {
-                res.status(500).json({ success: false, error: `服务器错误：${error.message}` });
-              }
-            });
 
-            // 获取评论
-            app.get("/fetch-comments", async (req, res) => {
-              try {
-                const response = await fetch("https://api.github.com/repos/leon00824/leon00824.github.io/issues?state=open", {
-                  headers: {
-                    "Authorization": `token ${process.env.GITHUB_TOKEN}`,
-                    "Accept": "application/vnd.github.v3+json",
-                  },
-                });
-                const issues = await response.json();
-                const commentsData = issues.map(issue => {
-                  const [name, className] = issue.title.match(/^(.*) \((.*)\)$/).slice(1);
-                  return { name, className, content: issue.body };
-                });
-                res.json(commentsData);
-              } catch (error) {
-                res.status(500).json({ error: `获取评论失败：${error.message}` });
-              }
-            });
+              const response = await fetch("https://api.github.com/repos/leon00824/leon00824.github.io/issues", {
+                method: "POST",
+                headers: {
+                  "Authorization": `token ${process.env.GITHUB_TOKEN}`,
+                  "Content-Type": "application/json",
+                  "Accept": "application/vnd.github.v3+json",
+                },
+                body: JSON.stringify({
+                  title: `${name} (${className}) 的留言`,
+                  body: content,
+                }),
+              });
 
-            app.listen(3000, () => console.log("API running on port 3000"));
+              if (response.ok) {
+                console.log("留言提交成功！");
+              } else {
+                console.error("提交失败，状态码：", response.status);
+              }
+            }
+
+            async function fetchComments() {
+              const response = await fetch("https://api.github.com/repos/leon00824/leon00824.github.io/issues?state=open", {
+                headers: {
+                  "Authorization": `token ${process.env.GITHUB_TOKEN}`,
+                  "Accept": "application/vnd.github.v3+json",
+                },
+              });
+              const issues = await response.json();
+              const commentsData = issues.map(issue => {
+                const [name, className] = issue.title.match(/^(.*) \((.*)\)$/).slice(1);
+                return { name, className, content: issue.body };
+              });
+
+              // 写入 comments.json 文件
+              const fs = require("fs");
+              fs.writeFileSync("comments.json", JSON.stringify(commentsData, null, 2));
+            }
+
+            (async () => {
+              await submitComment();
+              await fetchComments();
+            })();
           '
+
+      - name: Commit comments.json
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+          git add comments.json
+          git commit -m "Update comments.json with latest comments" || echo "No changes to commit"
+          git push
